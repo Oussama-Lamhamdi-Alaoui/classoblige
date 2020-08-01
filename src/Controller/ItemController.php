@@ -10,10 +10,28 @@ class ItemController extends AbstractController
 {
     public function menPolos(ItemRepository $repo)
     {
-        $poloItemList = $repo->findByTypeInStock('polo');
+        $poloItemList = $repo->findByTypeInStock('menpolo');
 
         return $this->render('item/men/polos.html.twig', [
             'poloItemList' => $poloItemList
+        ]);
+    }
+
+    public function menShirts(ItemRepository $repo)
+    {
+        $shirtItemList = $repo->findByTypeInStock('menshirt');
+
+        return $this->render('item/men/shirts.html.twig', [
+            'shirtItemList' => $shirtItemList
+        ]);
+    }
+
+    public function menPants(ItemRepository $repo)
+    {
+        $pantsItemList = $repo->findByTypeInStock('menpants');
+
+        return $this->render('item/men/pants.html.twig', [
+            'pantsItemList' => $pantsItemList
         ]);
     }
 }

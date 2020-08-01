@@ -6,23 +6,27 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
         <link rel="stylesheet" href="https://bootswatch.com/4/lux/bootstrap.css">
         <style>
-        .btn-cart {
-            width: 35px;
-            height: 35px;
-            border-radius: 50%;
-            font-size: 2em;
-            color: #fff;
-            text-align: center;
-            background: red;
-            padding: 0;
-        }
+            .btn-cart {
+                width: 35px;
+                height: 35px;
+                border-radius: 50%;
+                font-size: 2em;
+                color: #fff;
+                text-align: center;
+                background: red;
+                padding: 0;
+            }
+
+            .nav-pills .show > .nav-link {
+                background-color: #252525;
+            }
         </style>
 
         {% block stylesheets %}{% endblock %}
     </head>
     <body>
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-            <a class="navbar-brand" href="#">MorStyle</a>
+            <a class="navbar-brand ml-2" href="#">Class Oblige</a>
 
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -37,11 +41,11 @@
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Men</a>
                         <div class="dropdown-menu">
-                            <a class="dropdown-item" href="{{ path('app_item_men_polos') }}">Polos</a>
-                            <a class="dropdown-item" href="#">Another action</a>
-                            <a class="dropdown-item" href="#">Something else here</a>
+                            <a class="dropdown-item" href="#">Browse</a>
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#">Separated link</a>
+                            <a class="dropdown-item" href="{{ path('app_item_men_polos') }}">Polos</a>
+                            <a class="dropdown-item" href="{{ path('app_item_men_shirts') }}">Shirts</a>
+                            <a class="dropdown-item" href="{{ path('app_item_men_pants') }}">Pants</a>
                         </div>
                     </li>
 

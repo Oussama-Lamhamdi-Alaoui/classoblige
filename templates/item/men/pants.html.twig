@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Men's Lineup: Polos | MorStyle{% endblock %}
+{% block title %}Men's Lineup: Pants | MorStyle{% endblock %}
 
 {% block body %}
 
@@ -15,11 +15,11 @@
         text-align: center;
     }
 
-    .banner-men-polos {
-        background: url("../../img/banners/banner-men-polos.jpg") no-repeat center center;
+    .banner-men-pants {
+        background: url("../../img/banners/banner-men-pants.jpg") no-repeat center center;
         background-size: auto;
         padding: 0 0 400px 0;
-        filter: brightness(50%);
+        filter: brightness(60%);
     }
 
     .text-banner {
@@ -43,7 +43,7 @@
         overflow: hidden;
         text-overflow: ellipsis;
     }
-        
+    
     .standard-price {
         text-decoration: line-through;
     }
@@ -51,10 +51,10 @@
 
 <div class="container-fluid">
     <div class="banner-container">
-        <div class="banner-men-polos"></div>
+        <div class="banner-men-pants"></div>
         <div class="text-banner">
-            <h1 class="text-white">Polos</h1>
-            <h5 class="text-white">A timeless classic and the most versatile shirt in your closet.</h5>
+            <h1 class="text-white">Pants</h1>
+            <h5 class="text-white">Build perfect work and play outfits from the bottoms up.</h5>
         </div>
     </div>
 </div>
@@ -77,7 +77,7 @@
         <div class="col-md-9 p-1">
             
             <div class="row no-gutters">
-                {% for item in poloItemList %}
+                {% for item in pantsItemList %}
                 {% if loop.index % 3 == 1 %}
                     <div class="col-md-4 p-1">
                         <div class="card">

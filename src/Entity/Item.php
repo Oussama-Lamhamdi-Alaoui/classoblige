@@ -43,7 +43,7 @@ class Item
     private $itemSize;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", options={"default": "CURRENT_TIMESTAMP"})
      */
     private $itemDateAdded;
 
@@ -56,6 +56,11 @@ class Item
      * @ORM\Column(type="boolean")
      */
     private $itemOnSale;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $itemSale;
 
     public function getId(): ?int
     {
@@ -154,6 +159,18 @@ class Item
     public function setItemOnSale(bool $itemOnSale): self
     {
         $this->itemOnSale = $itemOnSale;
+
+        return $this;
+    }
+
+    public function getItemSale(): ?float
+    {
+        return $this->itemSale;
+    }
+
+    public function setItemSale(?float $itemSale): self
+    {
+        $this->itemSale = $itemSale;
 
         return $this;
     }

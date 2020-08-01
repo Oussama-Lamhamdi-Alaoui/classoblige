@@ -14,3 +14,11 @@ app_home:
 app_item_men_polos:
     path: /men/polos
     controller: App\Controller\ItemController::menPolos
+
+app_item_men_shirts:
+    path: /men/shirts
+    controller: App\Controller\ItemController::menShirts
+
+app_item_men_pants:
+    path: /men/pants
+    controller: App\Controller\ItemController::menPants
