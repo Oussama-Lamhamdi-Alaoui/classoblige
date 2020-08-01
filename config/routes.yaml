@@ -1,3 +1,16 @@
 #index:
 #    path: /
 #    controller: App\Controller\DefaultController::index
+
+app_home:
+    path: /
+    controller: App\Controller\MainController::index
+
+#app_user_signup:
+#    path: /signup
+#    controller: App\Controller\UserController::signUp
+#    methods: GET|POST
+
+app_item_men_polos:
+    path: /men/polos
+    controller: App\Controller\ItemController::menPolos

@@ -1,0 +1,114 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Sign Up | MorStyle{% endblock %}
+
+{% block body %}
+<style>
+    .container-fluid {
+        position: relative;
+        padding: 0;
+    }
+
+    .banner-container {
+        width: 100%;
+        text-align: center;
+    }
+
+    .banner-signup {
+        background: url("https://images.pexels.com/photos/1036856/pexels-photo-1036856.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260") no-repeat center center;
+        background-size: auto;
+        padding: 200px 0 200px 0;
+        filter: brightness(50%);
+    }
+
+    .text-banner {
+        text-shadow: #000000 0em 0em 0.2em;
+        position: absolute;
+        bottom: 50%;
+        margin-left: auto;
+        margin-right: auto;
+        left: 0;
+        right: 0;
+        text-align: center;
+        color: #F5F5F5;
+    }
+</style>
+
+<div class="container-fluid">
+    <div class="banner-container">
+        <div class="banner-signup banner-filer pt-5"></div>
+        <div class="text-banner">
+            <h1 class="text-white">Sign Up</h1>
+            <h5 class="text-white">Join a community of stylish individuals worldwide.</h5>
+        </div>
+    </div>
+
+    <ol class="breadcrumb bg-light">
+        <li class="breadcrumb-item"><a href="{{ path('app_home') }}">Home</a></li>
+        <li class="breadcrumb-item active">Sign Up</li>
+    </ol>
+</div>
+<div class="container">
+    <div class="row p-5">
+        <div class="col-md-7 pr-5">
+            {{ form_start(signUpForm) }}
+                <div class="form-group">
+                    <label for="input-email">Email address</label>
+                    {{ form_widget(signUpForm.userEmail) }}
+                    <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="input-username">User Name</label>
+                    {{ form_widget(signUpForm.userName) }}
+                </div>
+
+                <div class="form-group">
+                    <label for="input-password">Password</label>
+                    {{ form_widget(signUpForm.userPass) }}
+                </div>
+
+                <div class="form-group">
+                    <label class="input-phone">Phone Number</label>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">+212</span>
+                        </div>
+                        {{ form_widget(signUpForm.userPhone) }}
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="input-address">Full Address</label>
+                    {{ form_widget(signUpForm.userAddress) }}
+                </div>
+
+                <div class="form-group">
+                    <label for="input-zip">ZIP Number</label>
+                    {{ form_widget(signUpForm.userZIP) }}
+                </div>
+
+                <button class="btn btn-success" type="submit">Sign Up!</button>
+            {{ form_end(signUpForm) }}
+        </div>
+
+        <div class="col-md-5 list-group">
+            <div class="list-group-item list-group-item-action active bg-dark text-white">
+            Why Sign Up?
+            </div>
+            <div class="list-group-item list-group-item-action">
+            &#9830; Check out faster
+            </div>
+            <div class="list-group-item list-group-item-action">
+            &#9830; Save shipping address
+            </div>
+            <div class="list-group-item list-group-item-action">
+            &#9830; Access your order history
+            </div>
+            <div class="list-group-item list-group-item-action">
+            &#9830; Save items to your wish list
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

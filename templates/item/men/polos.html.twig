@@ -1,0 +1,156 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Men's Lineup: Polos | MorStyle{% endblock %}
+
+{% block body %}
+
+<style>
+    .container-fluid {
+        position: relative;
+        padding: 0;
+    }
+
+    .banner-container {
+        width: 100%;
+        text-align: center;
+    }
+
+    .banner-men-polos {
+        background: url("https://images.pexels.com/photos/1861586/pexels-photo-1861586.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260") no-repeat center center;
+        background-size: auto;
+        padding: 200px 0 200px 0;
+        filter: brightness(50%);
+    }
+
+    .text-banner {
+        text-shadow: #000000 0em 0em 0.2em;
+        position: absolute;
+        bottom: 50%;
+        margin-left: auto;
+        margin-right: auto;
+        left: 0;
+        right: 0;
+        text-align: center;
+        color: #F5F5F5;
+    }
+
+    img {
+        max-width: 100%;
+    }
+</style>
+
+<div class="container-fluid">
+    <div class="banner-container">
+        <div class="banner-men-polos pt-5"></div>
+        <div class="text-banner">
+            <h1 class="text-white">Polos</h1>
+            <h5 class="text-white">A timeless classic and the most versatile shirt in your closet.</h5>
+        </div>
+    </div>
+
+    <ol class="breadcrumb bg-light">
+        <li class="breadcrumb-item"><a href="{{ path('app_home') }}">Home</a></li>
+        <li class="breadcrumb-item"><a href="#">Men</a></li>
+        <li class="breadcrumb-item active">Polos</li>
+    </ol>
+</div>
+
+<div class="container">
+    <div class="row no-gutters">
+        <div class="col-md-3 p-1">
+            <img class="p-1" style="height: 720px; width: 100%; display: block;" src="http://placehold.it/720x380">
+        </div>
+        <div class="col-md-9 p-1">
+            <div class="row no-gutters">
+                <div class="col-md-4 p-1">
+                    <div class="card">
+                        <h3 class="card-header">Item Name</h3>
+                        <img class="h-25" style="width: 100%;" src="http://placehold.it/380x380">
+                        <div class="card-body">
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">1000MAD - 1500MAD</li>
+                                <li class="list-group-item">Size : XXS - 3XL</li>
+                            </ul>
+                            <div class="card-body">
+                                <form>
+                                    <div class="form-row">
+                                        <div class="col-lg-6 mx-auto">
+                                            <input class="form-control" type="number" max="10" placeholder="Qty">
+                                        </div>
+                                        <div class="col-lg-auto mx-auto">
+                                            <button class="w-100 btn btn-secondary" type="submit">Add</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="card-footer text-muted">2 days ago</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 p-1">
+                    <div class="card">
+                        <h3 class="card-header">Item Name</h3>
+                        <img class="h-25" style="width: 100%;" src="http://placehold.it/380x380">
+                        <div class="card-body">
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">1000MAD - 1500MAD</li>
+                                <li class="list-group-item">Size : XXS - 3XL</li>
+                            </ul>
+                            <div class="card-body">
+                                <form>
+                                    <div class="form-row">
+                                        <div class="col-lg-6 mx-auto">
+                                            <input class="form-control" type="number" max="10" placeholder="Qty">
+                                        </div>
+                                        <div class="col-lg-auto mx-auto">
+                                            <button class="w-100 btn btn-secondary" type="submit">Add</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="card-footer text-muted">2 days ago</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 p-1">
+                    <div class="card">
+                        <h3 class="card-header">Item Name</h3>
+                        <img class="h-25" style="width: 100%;" src="http://placehold.it/380x380">
+                        <div class="card-body">
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">1000MAD - 1500MAD</li>
+                                <li class="list-group-item">Size : XXS - 3XL</li>
+                            </ul>
+                            <div class="card-body">
+                                <form>
+                                    <div class="form-row">
+                                        <div class="col-lg-6 mx-auto">
+                                            <input class="form-control" type="number" max="10" placeholder="Qty">
+                                        </div>
+                                        <div class="col-lg-auto mx-auto">
+                                            <button class="w-100 btn btn-secondary" type="submit">Add</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="card-footer text-muted">2 days ago</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% for item in poloItemList %}
+        <div>
+            <h1>{{ item.itemName }}</h1>
+            <h5>{{ item.itemType }}</h5>
+            <h5>{{ item.itemPrice }}</h5>
+            <h5>{{ item.itemStock }}</h5>
+        </div>
+    {% else %}
+        <h1>No Polos In Stock</h1>
+    {% endfor %}
+</div>
+
+{% endblock %}

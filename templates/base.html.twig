@@ -3,10 +3,99 @@
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}Welcome!{% endblock %}</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
+        <link rel="stylesheet" href="https://bootswatch.com/4/lux/bootstrap.css">
+        <style>
+        .btn-cart {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            font-size: 2em;
+            color: #fff;
+            text-align: center;
+            background: red;
+            padding: 0;
+        }
+        </style>
+
         {% block stylesheets %}{% endblock %}
     </head>
     <body>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <a class="navbar-brand" href="#">MorStyle</a>
+
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarColor02">
+                <ul class="navbar-nav mr-auto nav-pills">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="{{ path('app_home') }}">Home<span class="sr-only">(current)</span></a>
+                    </li>
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Men</a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="{{ path('app_item_men_polos') }}">Polos</a>
+                            <a class="dropdown-item" href="#">Another action</a>
+                            <a class="dropdown-item" href="#">Something else here</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#">Separated link</a>
+                        </div>
+                    </li>
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Ladies</a>
+                        <div class="dropdown-menu" style="">
+                        <a class="dropdown-item" href="#">Action</a>
+                        <a class="dropdown-item" href="#">Another action</a>
+                        <a class="dropdown-item" href="#">Something else here</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#">Separated link</a>
+                        </div>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">About</a>
+                    </li>
+                </ul>
+
+                <ul class="navbar-nav mr-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('app_user_signup') }}">Sign Up</a>
+                    </li>
+                    <li class="nav-item mr-0">
+                        <a class="nav-link" href="{{ path('app_user_signup') }}">Cart</a>
+                    </li>
+                </ul>
+                <form class="form-inline my-2 my-lg-0">
+                    <button class="btn btn-cart my-2 my-sm-0">99</button>
+                </form>
+            </div>
+        </nav>
+
         {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
     </body>
+
+    <footer>
+        <div class="container-fluid">
+            <div class="text-center bg-dark pt-5 pb-5 mt-3">
+                <p class="lead text-white">Join our mailing list to receive email exclusives.</p>
+                <form>
+                        <div class="col-lg-3 mx-auto">
+                            <div class="input-group">
+                                <input type="email" class="form-control" placeholder="Email">
+                                <div class="input-group-append">
+                                    <button type="button" class="btn btn-success input-group-text">Go!</button>
+                                </div>
+                            </div>
+                        </div>
+                </form>
+            </div>
+        </div>
+    </footer>
+    {% block javascripts %}{% endblock %}
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 </html>
