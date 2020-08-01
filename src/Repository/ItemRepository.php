@@ -18,7 +18,7 @@ class ItemRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Item::class);
     }
-
+    
     public function findByTypeInStock($value)
     {
         return $this->createQueryBuilder('qb')

@@ -43,7 +43,7 @@ class Item
     private $itemSize;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="datetime")
      */
     private $itemDateAdded;
 
@@ -122,12 +122,12 @@ class Item
         return $this;
     }
 
-    public function getItemDateAdded(): ?string
+    public function getItemDateAdded(): ?\DateTimeInterface
     {
         return $this->itemDateAdded;
     }
 
-    public function setItemDateAdded(string $itemDateAdded): self
+    public function setItemDateAdded(\DateTimeInterface $itemDateAdded): self
     {
         $this->itemDateAdded = $itemDateAdded;
 
