@@ -46,7 +46,7 @@
                         <li class="nav-item"><a href="#"><h5>Manage Store</h5></a></li>
                     {% elseif is_granted('ROLE_USER_ADMIN') %}
                         <li class="nav-item"><a href="{{ path('app_logout') }}"><h5>Log Out</h5></a></li>
-                        <li class="nav-item"><a href="#"><h5>Dashboard</h5></a></li>
+                        <li class="nav-item"><a href="{{ path('app_admin_dashboard') }}"><h5>Dashboard</h5></a></li>
                         <li class="nav-item"><a href="#"><h5>Manage Store</h5></a></li>
                     {% elseif is_granted('IS_AUTHENTICATED_FULLY') %}
                         <li class="nav-item"><a href="{{ path('app_logout') }}"><h5>Log Out</h5></a></li>
@@ -113,21 +113,23 @@
     </body>
 
     <footer>
-        <div class="container-fluid">
-            <div class="text-center bg-dark pt-5 pb-5 mt-3">
-                <p class="lead text-white">Join our mailing list to receive email exclusives.</p>
-                <form>
-                        <div class="col-lg-3 mx-auto">
-                            <div class="input-group">
-                                <input type="email" class="form-control" placeholder="Email">
-                                <div class="input-group-append">
-                                    <button type="button" class="btn btn-success input-group-text">Go!</button>
+        {% if not is_granted('IS_AUTHENTICATED_FULLY') %}
+            <div class="container-fluid">
+                <div class="text-center bg-dark pt-5 pb-5 mt-3">
+                    <p class="lead text-white">Join our mailing list to receive email exclusives.</p>
+                    <form>
+                            <div class="col-lg-3 mx-auto">
+                                <div class="input-group">
+                                    <input type="email" class="form-control" placeholder="Email">
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-success input-group-text">Go!</button>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                </form>
+                    </form>
+                </div>
             </div>
-        </div>
+        {% endif %}
     </footer>
     {% block javascripts %}{% endblock %}
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

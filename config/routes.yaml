@@ -34,3 +34,7 @@ app_item_men_shirts:
 app_item_men_pants:
     path: /men/pants
     controller: App\Controller\ItemController::menPants
+
+app_admin_dashboard:
+    path: /admin
+    controller: App\Controller\AdminController::dashboard
