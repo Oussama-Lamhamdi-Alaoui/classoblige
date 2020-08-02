@@ -11,6 +11,18 @@ app_home:
 #    controller: App\Controller\UserController::signUp
 #    methods: GET|POST
 
+app_login:
+    path: /login
+    controller: App\Controller\UserController::login
+
+app_logout:
+    path: /logout
+    controller: App\Controller\UserController::logout
+
+app_signup:
+    path: /signup
+    controller: App\Controller\UserController::signUp
+
 app_item_men_polos:
     path: /men/polos
     controller: App\Controller\ItemController::menPolos

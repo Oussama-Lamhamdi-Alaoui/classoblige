@@ -1,0 +1,119 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Sign Up | Class Oblige{% endblock %}
+
+
+{% block body %}
+<style>
+    .container-fluid {
+        position: relative;
+        padding: 0;
+    }
+
+    .banner-container {
+        width: 100%;
+        text-align: center;
+    }
+
+    .banner-men-polos {
+        background: url("../img/banners/banner-user-signup.jpg") no-repeat center center;
+        background-size: auto;
+        padding: 0 0 400px 0;
+        filter: brightness(50%);
+    }
+
+    .text-banner {
+        text-shadow: #000000 0em 0em 0.2em;
+        position: absolute;
+        bottom: 50%;
+        margin-left: auto;
+        margin-right: auto;
+        left: 0;
+        right: 0;
+        text-align: center;
+        color: #F5F5F5;
+    }
+
+    img {
+        max-width: 100%;
+    }
+
+    .text-nowrap {
+        width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+        
+    .standard-price {
+        text-decoration: line-through;
+    }
+</style>
+
+<div class="container-fluid">
+    <div class="banner-container">
+        <div class="banner-men-polos"></div>
+        <div class="text-banner">
+            <h1 class="text-white">Sign Up</h1>
+            <h5 class="text-white">Join a community of stylish individuals worldwide.</h5>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid bg-light mb-2">
+    <div class="container">
+        <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item"><a href="{{ path('app_home') }}">Home</a></li>
+            <li class="breadcrumb-item"><a href="#">Sign Up</a></li>
+        </ol>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+        {{ form_start(signUpForm) }}
+            <div class="form-group">
+                <label for="input-email">Email address</label>
+                {{ form_widget(signUpForm.email) }}
+                <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+            </div>
+
+            <div class="form-group">
+                <label for="input-username">User Name</label>
+                {{ form_widget(signUpForm.name) }}
+            </div>
+            
+            <div class="form-group">
+                <label for="input-address">Full Address</label>
+                {{ form_widget(signUpForm.address) }}
+            </div>                
+        </div>
+
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="input-password">Password</label>
+                {{ form_widget(signUpForm.pass) }}
+                <small id="emailHelp" class="form-text text-muted">Do not share this password with anyone else.</small>
+            </div>
+
+            <div class="form-group">
+                <label class="input-phone">Phone Number</label>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">+212</span>
+                    </div>
+                    {{ form_widget(signUpForm.phone) }}
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="input-zip">ZIP Number</label>
+                {{ form_widget(signUpForm.zip) }}
+            </div>
+        </div>
+
+        <button class="btn btn-success ml-auto mr-auto mt-4" type="submit">Sign Up!</button>
+        {{ form_end(signUpForm) }}
+    </div>
+</div>
+{% endblock %}

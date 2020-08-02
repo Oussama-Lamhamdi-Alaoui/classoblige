@@ -20,11 +20,44 @@
             .nav-pills .show > .nav-link {
                 background-color: #252525;
             }
-        </style>
 
+            .container-fluid {
+                padding: 0;
+                margin: 0;
+            }
+
+            .nav-panel {
+                list-style-type: none;
+                overflow: hidden;
+            }
+
+            .nav-item {
+                float: right;
+            }
         {% block stylesheets %}{% endblock %}
+        </style>
     </head>
     <body>
+        <div class="container-fluid" style="background: #d1d1d1;">
+            <div class="container">
+                <ul class="nav-panel pt-2 mb-0">                        
+                    {% if is_granted('ROLE_USER_EMPLOYEE') %}
+                        <li class="nav-item"><a href="{{ path('app_logout') }}"><h5>Log Out</h5></a></li>
+                        <li class="nav-item"><a href="#"><h5>Manage Store</h5></a></li>
+                    {% elseif is_granted('ROLE_USER_ADMIN') %}
+                        <li class="nav-item"><a href="{{ path('app_logout') }}"><h5>Log Out</h5></a></li>
+                        <li class="nav-item"><a href="#"><h5>Dashboard</h5></a></li>
+                        <li class="nav-item"><a href="#"><h5>Manage Store</h5></a></li>
+                    {% elseif is_granted('IS_AUTHENTICATED_FULLY') %}
+                        <li class="nav-item"><a href="{{ path('app_logout') }}"><h5>Log Out</h5></a></li>
+                    {% else %}
+                        <li class="nav-item"><a href="{{ path('app_signup') }}"><h5>Sign Up</h5></a></li>
+                        <li class="nav-item"><a href="{{ path('app_login') }}"><h5>Log In</h5></a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+        
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <a class="navbar-brand ml-2" href="#">Class Oblige</a>
 
@@ -66,9 +99,6 @@
                 </ul>
 
                 <ul class="navbar-nav mr-0">
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Sign Up</a>
-                    </li>
                     <li class="nav-item mr-0">
                         <a class="nav-link" href="#">Cart</a>
                     </li>

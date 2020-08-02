@@ -34,6 +34,46 @@ class User implements UserInterface
      */
     private $password;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $name;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $phone;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $address;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $zip;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $salary;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $cnss;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $history;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $wishlist;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -110,5 +150,101 @@ class User implements UserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): self
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    public function getPhone(): ?int
+    {
+        return $this->phone;
+    }
+
+    public function setPhone(int $phone): self
+    {
+        $this->phone = $phone;
+
+        return $this;
+    }
+
+    public function getAddress(): ?string
+    {
+        return $this->address;
+    }
+
+    public function setAddress(string $address): self
+    {
+        $this->address = $address;
+
+        return $this;
+    }
+
+    public function getZip(): ?int
+    {
+        return $this->zip;
+    }
+
+    public function setZip(int $zip): self
+    {
+        $this->zip = $zip;
+
+        return $this;
+    }
+
+    public function getSalary(): ?float
+    {
+        return $this->salary;
+    }
+
+    public function setSalary(?float $salary): self
+    {
+        $this->salary = $salary;
+
+        return $this;
+    }
+
+    public function getCnss(): ?float
+    {
+        return $this->cnss;
+    }
+
+    public function setCnss(?float $cnss): self
+    {
+        $this->cnss = $cnss;
+
+        return $this;
+    }
+
+    public function getHistory(): ?string
+    {
+        return $this->history;
+    }
+
+    public function setHistory(?string $history): self
+    {
+        $this->history = $history;
+
+        return $this;
+    }
+
+    public function getWishlist(): ?string
+    {
+        return $this->wishlist;
+    }
+
+    public function setWishlist(?string $wishlist): self
+    {
+        $this->wishlist = $wishlist;
+
+        return $this;
     }
 }
