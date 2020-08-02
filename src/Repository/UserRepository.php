@@ -36,6 +36,26 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $this->_em->flush();
     }
 
+    // Custom Function
+    public function findSumSalary()
+    {
+        return $this->createQueryBuilder('qb')
+            ->select('SUM(qb.salary)')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    // Custom Function
+    public function findSumCNSS()
+    {
+        return $this->createQueryBuilder('qb')
+            ->select('SUM(qb.cnss)')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
     // /**
     //  * @return User[] Returns an array of User objects
     //  */
@@ -52,7 +72,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         ;
     }
     */
-
+    
     /*
     public function findOneBySomeField($value): ?User
     {
