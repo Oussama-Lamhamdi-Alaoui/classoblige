@@ -116,7 +116,7 @@
                 <div class="row no-gutters align-items-center">
                 <div class="col mr-2">
                     <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Items in stock</div>
-                    <div class="h5 mb-0 font-weight-bold text-gray-800">218</div>
+                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{ itemsInStock }}</div>
                 </div>
                 <div class="col-auto">
                 </div>
@@ -130,29 +130,38 @@
         <div class="col-xl-12 col-lg-12 p-0">
             <div class="card shadow mb-4">
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                <h6 class="m-0 font-weight-bold text-primary">Bank Checks</h6>
-                    <div class="dropdown no-arrow">
-                    <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
-                        <div class="dropdown-header">Dropdown Header:</div>
-                        <a class="dropdown-item" href="#">Action</a>
-                        <a class="dropdown-item" href="#">Another action</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">Something else here</a>
-                    </div>
-                </div>
+                <h6 class="m-0 font-weight-bold text-primary">Bank Cheques</h6>
+                <a class="btn btn-secondary btn-sm" href="{{ path('app_admin_addcheque') }}" role="button">Add</a>
             </div>
             <div class="card-body">
-                <p>List of checks handed out by the company, click view to see a scanned version of the check</p>
+                <p>List of cheques handed out by the company, click view to see a scanned version of the cheque</p>
             </div>
             <ul class="list-group">
-                <li class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-                    Check 12-15-20
-                <button type="button" class="btn btn-info btn-sm">View</button>
-                </li>
-                <li class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-                    Check 12-15-20
-                <button type="button" class="btn btn-info btn-sm">View</button>
-                </li>
+                {% for cheque in chequesList %}
+                    <div class="row no-gutters list-group-item-action bg-light">
+                        <div class="col-lg-2 mx-auto" style="background: #f7f7f9;">
+                            <label class="form-control" for="input-salary">Cheque {{ cheque.id }}</label>
+                        </div>
+                        <div class="col-lg-8 mx-auto pt-2 pb-2">
+                            <ul>
+                                <li>Amount : {{ cheque.amount }}</li>
+                                <li>Beneficiary : {{ cheque.beneficiary }}</li>
+                                <li>Purpose : {{ cheque.purpose }} wwwwwwww wwwwwwwwwwwwwwwwww wwwww wwwwwwww</li>
+                            </ul>
+                        </div>
+                        <div class="col-lg-1 my-auto text-right">
+                            <a class="btn btn-info btn-sm" href="{{ asset('uploads/cheques/' ~ cheque.scan) }}" role="button">View</a>
+                        </div>
+                        <div class="col-lg-1 mx-auto my-auto text-center">
+                            <a class="btn btn-danger btn-sm" 
+                                href="{{ path('app_admin_deletecheque', {'id': cheque.id}) }}" 
+                                role="button"
+                                onclick="javascript:return confirm('Are you sure you want to delete this comment?')">
+                                Delete
+                            </a>
+                        </div>
+                    </div>
+                {% endfor %}
             </ul>
         </div>
     </div>

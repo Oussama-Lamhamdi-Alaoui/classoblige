@@ -30,6 +30,16 @@ class ItemRepository extends ServiceEntityRepository
         ;
     }
 
+    // Custom Function
+    public function findSumStock()
+    {
+        return $this->createQueryBuilder('qb')
+            ->select('SUM(qb.itemStock)')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
     // /**
     //  * @return Item[] Returns an array of Item objects
     //  */

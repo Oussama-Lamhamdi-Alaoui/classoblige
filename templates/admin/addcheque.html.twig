@@ -1,0 +1,105 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Add Cheque | Class Oblige{% endblock %}
+
+{% block body %}
+<style>
+    .container-fluid {
+        position: relative;
+        padding: 0;
+    }
+
+    .banner-container {
+        width: 100%;
+        text-align: center;
+    }
+
+    .banner-men-polos {
+        background: url("../../img/banners/banner-user-dashboard.jpg") no-repeat center center;
+        background-size: auto;
+        padding: 0 0 400px 0;
+        filter: brightness(50%);
+    }
+
+    .text-banner {
+        text-shadow: #000000 0em 0em 0.2em;
+        position: absolute;
+        bottom: 50%;
+        margin-left: auto;
+        margin-right: auto;
+        left: 0;
+        right: 0;
+        text-align: center;
+        color: #F5F5F5;
+    }
+</style>
+
+<div class="container-fluid">
+    <div class="banner-container">
+        <div class="banner-men-polos"></div>
+    </div>
+</div>
+
+<div class="container-fluid bg-light mb-2">
+    <div class="container">
+        <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item"><a href="{{ path('app_home') }}">Home</a></li>
+            <li class="breadcrumb-item"><a href="{{ path('app_admin_dashboard') }}">Dashboard</a></li>
+            <li class="breadcrumb-item active">Add Cheque</li>
+        </ol>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row mb-5">
+        <div class="col-md-6">
+            {{ form_start(chequeForm) }}
+            <div class="form-group">
+                <label for="input-id">Cheque ID</label>
+                {{ form_widget(chequeForm.uuid) }}
+            </div>
+
+            <div class="form-group">
+                <label for="input-username">Cheque Address</label>
+                {{ form_widget(chequeForm.address) }}
+            </div>
+            
+            <div class="form-group">
+                <label for="input-address">Cheque Amount</label>
+                {{ form_widget(chequeForm.amount) }}
+            </div>
+
+            <div class="form-group">
+                <label for="input-scan">Cheque Scan</label>
+                <div class="custom-file">                    
+                    {{ form_widget(chequeForm.scan) }}
+                    <label class="custom-file-label" for="input-scan">Enter Valid PDF</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="input-id">Cheque Name</label>
+                {{ form_widget(chequeForm.name) }}
+            </div>
+
+            <div class="form-group">
+                <label for="input-username">Cheque Beneficiary</label>
+                {{ form_widget(chequeForm.beneficiary) }}
+            </div>
+            
+            <div class="form-group">
+                <label for="input-address">Cheque Purpose</label>
+                {{ form_widget(chequeForm.purpose) }}
+            </div>
+
+            {#<img class="show-article-img" src="{{ uploaded_asset(article.imagePath)|imagine_filter('squared_thumbnail_medium') }}">
+            #}
+        </div>
+
+        <button class="btn btn-success ml-auto mr-auto mt-4" type="submit">Add</button>
+        {{ form_end(chequeForm) }}
+    </div>
+</div>
+{% endblock %}

@@ -2,20 +2,35 @@
 
 namespace App\Controller;
 
+use App\Entity\Cheque;
 use App\Entity\Expenses;
-use App\Repository\ExpensesRepository;
+use App\Repository\ItemRepository;
 use App\Repository\UserRepository;
+use App\Repository\ChequeRepository;
+use App\Repository\ExpensesRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Validator\Constraints\File;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Validator\Constraints\NotNull;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
 class AdminController extends AbstractController
 {
-    public function dashboard(Request $request, EntityManagerInterface $em, ExpensesRepository $repo, UserRepository $userRepo)
+    public function dashboard(Request $request, 
+        EntityManagerInterface $em, 
+        ExpensesRepository $repo, 
+        UserRepository $userRepo,
+        ChequeRepository $chequeRepo,
+        ItemRepository $itemRepo)
     {
+        $itemsInStock = $itemRepo->findSumStock()[0][1];
+
         $expensesForm = $this->createFormBuilder()
             ->add('insurance', NumberType::class, [
                 'attr' => [
@@ -73,15 +88,135 @@ class AdminController extends AbstractController
             + $salaryAmount
             + $cnssAmount : 1; 
         ;
+        
+        $chequesList = $chequeRepo->findAll();
 
         return $this->render('admin/dashboard.html.twig', [
+            'itemsInStock' => $itemsInStock,
             'expensesForm' => $expensesForm->createView(),
             'insuranceAmount' => $insuranceAmount,
             'utilityAmount' => $utilityAmount,
             'maintenanceAmount' => $maintenanceAmount,
             'salaryAmount' => $salaryAmount,
             'cnssAmount' => $cnssAmount,
-            'totalAmount' => $totalAmount
+            'totalAmount' => $totalAmount,
+            'chequesList' => $chequesList
         ]);
+    }
+
+    public function addCheque(Request $request, EntityManagerInterface $em) {
+        $chequeForm = $this->createFormBuilder()
+            ->add('uuid', NumberType::class, [
+                'attr' => [
+                    'placeholder' => '1234',
+                    'class' => 'form-control',
+                    'id' => 'input-uuid'
+                ]
+            ])
+            ->add('name', TextType::class, [
+                'attr' => [
+                    'placeholder' => 'Enter Username',
+                    'class' => 'form-control',
+                    'id' => 'input-username'
+                ]
+            ])
+            ->add('address', TextType::class, [
+                'attr' => [
+                    'placeholder' => 'Enter Address',
+                    'class' => 'form-control',
+                    'id' => 'input-address'
+                ]
+            ])
+            ->add('beneficiary', TextType::class, [
+                'attr' => [
+                    'placeholder' => 'Enter Beneficiary',
+                    'class' => 'form-control',
+                    'id' => 'input-beneficiary'
+                ]
+            ])
+            ->add('amount', NumberType::class, [
+                'attr' => [
+                    'placeholder' => 'Enter Amount',
+                    'class' => 'form-control',
+                    'id' => 'input-amount'
+                ]
+            ])
+            ->add('purpose', TextType::class, [
+                'attr' => [
+                    'placeholder' => 'Enter Purpose',
+                    'class' => 'form-control',
+                    'id' => 'input-purpose'
+                ]
+            ])
+            ->add('scan', FileType::class, [
+                'mapped' => false,
+                'required' => true,
+                'constraints' => [
+                    new File([
+                        'maxSize' => '1024k',
+                        'mimeTypes' => [
+                            'application/pdf',
+                            'application/x-pdf',
+                        ],
+                        'mimeTypesMessage' => 'Please upload a valid PDF document'
+                    ])
+                ],
+                'attr' => [
+                    'class' => 'custom-file-input form-control',
+                    'id' => 'input-scan'
+                ]
+            ])
+            ->getForm()
+        ;
+
+        $chequeForm->handleRequest($request);
+
+        if($chequeForm->isSubmitted() && $chequeForm->isValid()) {
+            $newCheque = new Cheque();
+            $data = $chequeForm->getData();
+            $scanFile = $chequeForm->get('scan')->getData();
+            
+            $newCheque->setUuid($data['uuid']);
+            $newCheque->setName($data['name']);
+            $newCheque->setAddress($data['address']);
+            $newCheque->setBeneficiary($data['beneficiary']);
+            $newCheque->setAmount($data['amount']);
+            $newCheque->setPurpose($data['purpose']);
+            
+            $newFilename = 'scan-'.bin2hex(openssl_random_pseudo_bytes(11)).'.'.$scanFile->guessExtension();
+
+            // Move the file to the directory where brochures are stored
+            try {
+                $scanFile->move(
+                    $this->getParameter('upload_dir_cheques'),
+                    $newFilename
+                );
+            } catch (FileException $e) {
+                // ... handle exception if something happens during file upload
+            }
+
+            $newCheque->setScan($newFilename);
+
+            $em->persist($newCheque);
+            $em->flush();
+
+            return $this->redirectToRoute('app_admin_dashboard');
+        }
+
+        return $this->render('admin/addcheque.html.twig', [
+            'chequeForm' => $chequeForm->createView()
+        ]);
+    }
+
+    public function deleteCheque(Cheque $cheque, EntityManagerInterface $em): Response {
+        $filename = $cheque->getScan();
+
+        $filesystem = new Filesystem();
+        $filesystem->remove('uploads/cheques/'.$filename);
+
+        $em->remove($cheque);
+        $em->flush();
+        
+        return $this->redirectToRoute('app_admin_dashboard');
     }
 }

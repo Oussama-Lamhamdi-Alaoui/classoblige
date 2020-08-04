@@ -38,3 +38,11 @@ app_item_men_pants:
 app_admin_dashboard:
     path: /admin
     controller: App\Controller\AdminController::dashboard
+
+app_admin_addcheque:
+    path: /admin/addcheque
+    controller: App\Controller\AdminController::addCheque
+
+app_admin_deletecheque:
+    path: /admin/deletecheque/{id}
+    controller: App\Controller\AdminController::deleteCheque

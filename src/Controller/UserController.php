@@ -7,11 +7,8 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Form\Extension\Core\Type\TelType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
-use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -39,6 +36,13 @@ class UserController extends AbstractController
 
     public function signUp(Request $request, EntityManagerInterface $em, UserPasswordEncoderInterface $encoder) : Response {
         $signUpForm = $this->createFormBuilder()
+            ->add('name', NumberType::class, [
+                'attr' => [
+                    'placeholder' => 'Enter Name',
+                    'class' => 'form-control',
+                    'id' => 'input-name'
+                ]
+            ])
             ->add('email', EmailType::class, [
                 'attr' => [
                     'placeholder' => 'example@example.com',
