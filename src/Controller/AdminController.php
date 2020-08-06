@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Cheque;
 use App\Entity\Expenses;
+use App\Entity\User;
 use App\Repository\ItemRepository;
 use App\Repository\UserRepository;
 use App\Repository\ChequeRepository;
@@ -18,6 +19,8 @@ use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\TelType;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
 class AdminController extends AbstractController
@@ -90,6 +93,7 @@ class AdminController extends AbstractController
         ;
         
         $chequesList = $chequeRepo->findAll();
+        $employeesList = $userRepo->findByRole('ROLE_USER_EMPLOYEE');
 
         return $this->render('admin/dashboard.html.twig', [
             'itemsInStock' => $itemsInStock,
@@ -100,7 +104,8 @@ class AdminController extends AbstractController
             'salaryAmount' => $salaryAmount,
             'cnssAmount' => $cnssAmount,
             'totalAmount' => $totalAmount,
-            'chequesList' => $chequesList
+            'chequesList' => $chequesList,
+            'employeesList' => $employeesList
         ]);
     }
 
@@ -215,6 +220,74 @@ class AdminController extends AbstractController
         $filesystem->remove('uploads/cheques/'.$filename);
 
         $em->remove($cheque);
+        $em->flush();
+        
+        return $this->redirectToRoute('app_admin_dashboard');
+    }
+    
+    public function editEmployee(User $employee, Request $request, EntityManagerInterface $em): Response {
+        $employeeForm = $this->createFormBuilder($employee)
+            ->add('email', EmailType::class, [
+                'attr' => [
+                    'class' => 'form-control',
+                    'id' => 'input-email'
+                ]
+            ])
+            ->add('name', TextType::class, [
+                'attr' => [
+                    'class' => 'form-control',
+                    'id' => 'input-name'
+                ]
+            ])
+            ->add('phone', TelType::class, [
+                'attr' => [
+                    'class' => 'form-control',
+                    'id' => 'input-phone'
+                ]
+            ])
+            ->add('address', TextType::class, [
+                'attr' => [
+                    'class' => 'form-control',
+                    'id' => 'input-address'
+                ]
+            ])
+            ->add('zip', NumberType::class, [
+                'attr' => [
+                    'class' => 'form-control',
+                    'id' => 'input-zip'
+                ]
+            ])
+            ->add('salary', NumberType::class, [
+                'attr' => [
+                    'class' => 'form-control',
+                    'id' => 'input-salary'
+                ]
+            ])
+            ->add('cnss', NumberType::class, [
+                'attr' => [
+                    'class' => 'form-control',
+                    'id' => 'input-cnss'
+                ]
+            ])
+            ->getForm()
+        ;
+        
+        $employeeForm->handleRequest($request);
+
+        if($employeeForm->isSubmitted() && $employeeForm->isValid()) {
+            $em->flush();
+
+            return $this->redirectToRoute('app_admin_dashboard');
+        }
+
+        return $this->render('admin/editemployee.html.twig', [
+            'employeeForm' => $employeeForm->createView(),
+            'employee' => $employee
+        ]);
+    }
+
+    public function deleteEmployee(User $employee, EntityManagerInterface $em): Response {
+        $em->remove($employee);
         $em->flush();
         
         return $this->redirectToRoute('app_admin_dashboard');

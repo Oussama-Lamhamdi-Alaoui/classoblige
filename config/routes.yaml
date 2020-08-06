@@ -46,3 +46,11 @@ app_admin_addcheque:
 app_admin_deletecheque:
     path: /admin/deletecheque/{id}
     controller: App\Controller\AdminController::deleteCheque
+
+app_admin_editemployee:
+    path: /admin/editemployee/{id}
+    controller: App\Controller\AdminController::editEmployee
+
+app_admin_deleteemployee:
+    path: /admin/deleteemployee/{id}
+    controller: App\Controller\AdminController::deleteEmployee

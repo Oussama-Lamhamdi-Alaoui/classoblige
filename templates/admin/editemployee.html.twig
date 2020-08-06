@@ -1,0 +1,113 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modify Employee | Class Oblige{% endblock %}
+
+{% block body %}
+<style>
+    .container-fluid {
+        position: relative;
+        padding: 0;
+    }
+
+    .banner-container {
+        width: 100%;
+        text-align: center;
+    }
+
+    .banner-men-polos {
+        background: url("../img/banners/banner-user-dashboard.jpg") no-repeat center center;
+        background-size: auto;
+        padding: 0 0 400px 0;
+        filter: brightness(50%);
+    }
+
+    .text-banner {
+        text-shadow: #000000 0em 0em 0.2em;
+        position: absolute;
+        bottom: 50%;
+        margin-left: auto;
+        margin-right: auto;
+        left: 0;
+        right: 0;
+        text-align: center;
+        color: #F5F5F5;
+    }
+</style>
+
+<div class="container-fluid">
+    <div class="banner-container">
+        <div class="banner-men-polos"></div>
+    </div>
+</div>
+
+<div class="container-fluid bg-light mb-2">
+    <div class="container">
+        <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item"><a href="{{ path('app_home') }}">Home</a></li>
+            <li class="breadcrumb-item"><a href="{{ path('app_admin_dashboard') }}">Dashboard</a></li>
+            <li class="breadcrumb-item active">Edit Employee</li>
+        </ol>
+    </div>
+</div>
+
+<div class="container">
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Employee {{ employee.id }}</h1>
+        <a class="btn btn-danger btn-sm" 
+            href="{{ path('app_admin_deleteemployee', {'id': employee.id}) }}" 
+            onclick="javascript:return confirm('Are you sure you want to delete employee {{ employee.id }} profile?')"
+            role="button">
+            Delete
+        </a>
+    </div>
+    <div class="row mb-5">
+        <div class="col-md-6">
+            {{ form_start(employeeForm) }}
+            <div class="form-group">
+                <label for="input-id">Employee Email</label>
+                {{ form_widget(employeeForm.email) }}
+            </div>
+
+            <div class="form-group">
+                <label for="input-username">Employee Phone</label>
+                {{ form_widget(employeeForm.phone) }}
+            </div>
+            
+            <div class="form-group">
+                <label for="input-address">Employee ZIP</label>
+                {{ form_widget(employeeForm.zip) }}
+            </div>
+
+            <div class="form-group">
+                <label for="input-address">Employee CNSS</label>
+                {{ form_widget(employeeForm.cnss) }}
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="input-id">Employee Name</label>
+                {{ form_widget(employeeForm.name) }}
+            </div>
+
+            <div class="form-group">
+                <label for="input-username">Employee Address</label>
+                {{ form_widget(employeeForm.address) }}
+            </div>
+            
+            <div class="form-group">
+                <label for="input-address">Employee Salary</label>
+                {{ form_widget(employeeForm.salary) }}
+            </div>
+        </div>
+
+        <button 
+            class="btn btn-success ml-auto mr-auto mt-4" 
+            onclick="javascript:return confirm('Are you sure you want to modify employee: {{ employee.name }}?')" 
+            type="submit">
+            Modify
+        </button>        
+        {{ form_end(employeeForm) }}
+    </div>
+</div>
+{% endblock %}
