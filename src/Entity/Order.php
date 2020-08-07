@@ -22,6 +22,7 @@ class Order
 
     /**
      * @ORM\ManyToMany(targetEntity=Item::class, inversedBy="orders")
+     * @ORM\JoinTable(name="order_item")
      */
     private $items;
 
@@ -44,6 +45,11 @@ class Order
      * @ORM\Column(type="integer")
      */
     private $clientId;
+
+    /**
+     * @ORM\Column(type="float")
+     */
+    private $total;
 
     public function __construct()
     {
@@ -125,6 +131,18 @@ class Order
     public function setClientId(int $clientId): self
     {
         $this->clientId = $clientId;
+
+        return $this;
+    }
+
+    public function getTotal(): ?float
+    {
+        return $this->total;
+    }
+
+    public function setTotal(float $total): self
+    {
+        $this->total = $total;
 
         return $this;
     }
