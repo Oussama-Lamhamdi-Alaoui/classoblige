@@ -101,10 +101,10 @@
                                     <form>
                                         <div class="form-row">
                                             <div class="col-lg-6 mx-auto">
-                                                <input class="form-control" type="number" max="10" placeholder="Qty">
+                                                <input class="form-control" type="number" max="{{ item.itemStock }}" placeholder="Qty">
                                             </div>
                                             <div class="col-lg-auto mx-auto">
-                                                <button class="w-100 btn btn-secondary" type="submit">Add</button>
+                                                <a class="btn btn-secondary w-100" href="{{ path('app_cart_additem', {'id': item.id, 'qty': 1}) }}" role="button">Add</a>
                                             </div>
                                         </div>
                                     </form>
@@ -136,10 +136,10 @@
                                     <form>
                                         <div class="form-row">
                                             <div class="col-lg-6 mx-auto">
-                                                <input class="form-control" type="number" max="10" placeholder="Qty">
+                                                <input class="form-control" type="number" max="{{ item.itemStock }}" placeholder="Qty">
                                             </div>
                                             <div class="col-lg-auto mx-auto">
-                                                <button class="w-100 btn btn-secondary" type="submit">Add</button>
+                                                <a class="btn btn-secondary w-100" href="{{ path('app_cart_additem', {'id': item.id, 'qty': 1}) }}" role="button">Add</a>
                                             </div>
                                         </div>
                                     </form>
@@ -171,10 +171,10 @@
                                     <form>
                                         <div class="form-row">
                                             <div class="col-lg-6 mx-auto">
-                                                <input class="form-control" type="number" max="10" placeholder="Qty">
+                                                <input class="form-control" type="number" max="{{ item.itemStock }}" placeholder="Qty">
                                             </div>
                                             <div class="col-lg-auto mx-auto">
-                                                <button class="w-100 btn btn-secondary" type="submit">Add</button>
+                                                <a class="btn btn-secondary w-100" href="{{ path('app_cart_additem', {'id': item.id, 'qty': 1}) }}" role="button">Add</a>
                                             </div>
                                         </div>
                                     </form>

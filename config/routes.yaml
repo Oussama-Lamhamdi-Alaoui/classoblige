@@ -54,3 +54,15 @@ app_admin_editemployee:
 app_admin_deleteemployee:
     path: /admin/deleteemployee/{id}
     controller: App\Controller\AdminController::deleteEmployee
+
+app_cart_view:
+    path: /cart
+    controller: App\Controller\ItemController::viewCart
+
+app_cart_additem:
+    path: /addtocart/{id}/{qty}
+    controller: App\Controller\ItemController::addToCart
+
+app_cart_removeitem:
+    path: /removefromcart/{id}
+    controller: App\Controller\ItemController::removeFromCart
