@@ -7,10 +7,10 @@
         <link rel="stylesheet" href="https://bootswatch.com/4/lux/bootstrap.css">
         <style>
             .btn-cart {
-                width: 35px;
+                width: 75px;
                 height: 35px;
-                border-radius: 50%;
-                font-size: 2em;
+                border-radius: 0%;
+                font-size: 1.2em;
                 color: #fff;
                 text-align: center;
                 background: red;
@@ -98,13 +98,8 @@
                     </li>
                 </ul>
 
-                <ul class="navbar-nav mr-0">
-                    <li class="nav-item mr-0">
-                        <a class="nav-link" href="{{ path('app_cart_view') }}">Cart</a>
-                    </li>
-                </ul>
                 <form class="form-inline my-2 my-lg-0">
-                    <a href="{{ path('app_cart_view') }}" class="btn btn-cart pt-1" role="button">99</a>
+                    <a href="{{ path('app_cart_view') }}" class="btn btn-cart pt-1" role="button">Cart</a>
                 </form>
             </div>
         </nav>

@@ -70,3 +70,7 @@ app_cart_removeitem:
 app_cart_payment:
     path: /cart/payment/{id}
     controller: App\Controller\ItemController::payment
+
+app_cart_success:
+    path: /cart/success/{id}
+    controller: App\Controller\ItemController::success

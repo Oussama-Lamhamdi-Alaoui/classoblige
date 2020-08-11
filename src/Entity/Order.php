@@ -51,6 +51,16 @@ class Order
      */
     private $total;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $method;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $receipt;
+
     public function __construct()
     {
         $this->items = new ArrayCollection();
@@ -143,6 +153,30 @@ class Order
     public function setTotal(float $total): self
     {
         $this->total = $total;
+
+        return $this;
+    }
+
+    public function getMethod(): ?string
+    {
+        return $this->method;
+    }
+
+    public function setMethod(?string $method): self
+    {
+        $this->method = $method;
+
+        return $this;
+    }
+
+    public function getReceipt(): ?string
+    {
+        return $this->receipt;
+    }
+
+    public function setReceipt(?string $receipt): self
+    {
+        $this->receipt = $receipt;
 
         return $this;
     }

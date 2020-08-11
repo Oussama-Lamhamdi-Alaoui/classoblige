@@ -7,6 +7,7 @@ use App\Entity\User;
 use App\Entity\Order;
 use App\Repository\ItemRepository;
 use App\Repository\OrderRepository;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Security;
@@ -16,6 +17,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 
 class ItemController extends AbstractController
 {
@@ -133,7 +136,7 @@ class ItemController extends AbstractController
         return $this->redirectToRoute('app_cart_view');
     }
 
-    public function payment($id, Request $request, OrderRepository $repo, ItemRepository $itemRepo, EntityManagerInterface $em) {
+    public function payment($id, Request $request, OrderRepository $repo, UserRepository $userRepo, ItemRepository $itemRepo, EntityManagerInterface $em) {
         $total = $repo->find($id)->getTotal();
         $orderQty = $repo->find($id)->getQuantities();
 
@@ -155,25 +158,37 @@ class ItemController extends AbstractController
                 ]
             ])
             ->getForm()
-        ;
+        ;        
 
         $cashForm->handleRequest($request);
 
         if ($cashForm->isSubmitted()) {
             if ($total < 6000) {
                 $repo->find($id)->setStatus(True);
+                $repo->find($id)->setMethod('cash');
 
                 foreach ($items as $key => $value) {
                     $item = $itemRepo->find($value['itemId']);
                     $item->setItemStock($item->getItemStock() - $orderQty[$value['itemId']]);
                 }
-    
+                
+                $cartItems = [];
+
+                foreach ($items as $key => $value) {
+                    $cartItems[$key]['id'] = $itemRepo->find($value['itemId'])->getItemName();
+                    $cartItems[$key]['qty'] = $orderQty[$value['itemId']];
+                }
+
+                $receiptFileName = $this->generateReceipt($repo->find($id), 'cash', $userRepo, $cartItems, $total);
+                $repo->find($id)->setReceipt($receiptFileName);
+
                 $em->flush();
 
-                return $this->redirectToRoute('app_home');
+                return $this->redirectToRoute('app_cart_success', ['id' => $id]);
             }
             else {
-                dd('total > 6000');
+                $referer = $request->headers->get('referer');
+                return $this->redirect($referer);
             }
         }
 
@@ -181,5 +196,46 @@ class ItemController extends AbstractController
             'cashForm' => $cashForm->createView(),
             'total' => $total
         ]);
-    }   
+    }
+
+    public function success($id, OrderRepository $repo) {
+        return $this->render('item/success.html.twig', [
+            'receipt' => $repo->find($id)->getReceipt()
+        ]);
+    }
+
+    private function generateReceipt(Order $order, $method, UserRepository $repo, $cart, $total) {
+        $pdfOptions = new Options();
+        $pdfOptions->set('defaultFont', 'Arial');
+
+        $dompdf = new Dompdf($pdfOptions);
+        $clientName = $repo->find($order->getClientId())->getName();
+        
+        $html = $this->renderView('item/receipt.html.twig', [
+            'method' => $method,
+            'clientName' => $clientName,
+            'cart' => $cart,
+            'total' => $total,
+            'orderId' => $order->getId(),
+            'orderDate' => $order->getDate()
+        ]);
+
+        $dompdf->loadHtml($html);
+
+        $dompdf->setPaper('A4', 'portrait');
+
+        $dompdf->render();
+
+        $output = $dompdf->output();
+
+        $publicDirectory = $this->getParameter('kernel.project_dir') . '/public/uploads/receipts/';
+        
+        $pdfFileName = 'receipt-'.bin2hex(openssl_random_pseudo_bytes(11)). '.pdf';
+        $pdfFilepath =  $publicDirectory . $pdfFileName;
+        
+        file_put_contents($pdfFilepath, $output);
+        return $pdfFileName;
+    } 
 }
+
+
