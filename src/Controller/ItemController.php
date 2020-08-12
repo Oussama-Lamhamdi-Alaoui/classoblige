@@ -2,23 +2,27 @@
 
 namespace App\Controller;
 
+use Dompdf\Dompdf;
+use Dompdf\Options;
 use App\Entity\Item;
 use App\Entity\User;
 use App\Entity\Order;
+use App\Entity\Cheque;
 use App\Repository\ItemRepository;
-use App\Repository\OrderRepository;
 use App\Repository\UserRepository;
+use App\Repository\OrderRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-use Dompdf\Dompdf;
-use Dompdf\Options;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
 class ItemController extends AbstractController
 {
@@ -150,7 +154,7 @@ class ItemController extends AbstractController
         ;
 
         $cashForm = $this->createFormBuilder()
-            ->add('submit', SubmitType::class, [
+            ->add('submitcash', SubmitType::class, [
                 'label' => 'Validate',
                 'attr' => [
                     'class' => 'btn btn-success',
@@ -158,10 +162,67 @@ class ItemController extends AbstractController
                 ]
             ])
             ->getForm()
-        ;        
+        ;
+        
+        $chequeForm = $this->createFormBuilder()
+            ->add('submitcheque', SubmitType::class, [
+                'label' => 'Validate',
+                'attr' => [
+                    'class' => 'btn btn-success',
+                    'onclick' => 'javascript:return confirm("Are you sure you want to validate?")'
+                ]
+            ])
+            ->add('scancheque', FileType::class, [
+                'mapped' => false,
+                'required' => true,
+                'constraints' => [
+                    new File([
+                        'maxSize' => '1024k',
+                        'mimeTypes' => [
+                            'application/pdf',
+                            'application/x-pdf',
+                        ],
+                        'mimeTypesMessage' => 'Please upload a valid PDF document'
+                    ])
+                ],
+                'attr' => [
+                    'class' => 'custom-file-input form-control',
+                    'id' => 'input-scan'
+                ]
+            ])
+            ->getForm()
+        ;
+
+        $transferForm = $this->createFormBuilder()
+            ->add('submittransfer', SubmitType::class, [
+                'label' => 'Validate',
+                'attr' => [
+                    'class' => 'btn btn-success',
+                    'onclick' => 'javascript:return confirm("Are you sure you want to validate?")'
+                ]
+            ])
+            ->add('scantransfer', FileType::class, [
+                'mapped' => false,
+                'required' => true,
+                'constraints' => [
+                    new File([
+                        'maxSize' => '1024k',
+                        'mimeTypes' => [
+                            'application/pdf',
+                            'application/x-pdf',
+                        ],
+                        'mimeTypesMessage' => 'Please upload a valid PDF document'
+                    ])
+                ],
+                'attr' => [
+                    'class' => 'custom-file-input form-control',
+                    'id' => 'input-scan'
+                ]
+            ])
+            ->getForm()
+        ;
 
         $cashForm->handleRequest($request);
-
         if ($cashForm->isSubmitted()) {
             if ($total < 6000) {
                 $repo->find($id)->setStatus(True);
@@ -192,8 +253,89 @@ class ItemController extends AbstractController
             }
         }
 
+        $chequeForm->handleRequest($request);
+        if($chequeForm->isSubmitted() && $chequeForm->isValid()) {
+            $scanFile = $chequeForm->get('scancheque')->getData();
+            
+            $newFilename = 'scan-'.bin2hex(openssl_random_pseudo_bytes(11)).'.'.$scanFile->guessExtension();
+
+            // Move the file to the directory where brochures are stored
+            try {
+                $scanFile->move(
+                    $this->getParameter('upload_dir_cheques'),
+                    $newFilename
+                );
+            } catch (FileException $e) {
+                // ... handle exception if something happens during file upload
+            }
+
+            $repo->find($id)->setStatus(True);
+            $repo->find($id)->setMethod('cheque');
+
+            foreach ($items as $key => $value) {
+                $item = $itemRepo->find($value['itemId']);
+                $item->setItemStock($item->getItemStock() - $orderQty[$value['itemId']]);
+            }
+            
+            $cartItems = [];
+
+            foreach ($items as $key => $value) {
+                $cartItems[$key]['id'] = $itemRepo->find($value['itemId'])->getItemName();
+                $cartItems[$key]['qty'] = $orderQty[$value['itemId']];
+            }
+
+            $receiptFileName = $this->generateReceipt($repo->find($id), 'cheque', $userRepo, $cartItems, $total);
+            $repo->find($id)->setReceipt($receiptFileName);
+            $repo->find($id)->setCheque($newFilename);
+            
+            $em->flush();
+
+            return $this->redirectToRoute('app_cart_success', ['id' => $id]);
+        }
+
+        
+        if($transferForm->isSubmitted() && $transferForm->isValid()) {
+            $scanFile = $chequeForm->get('scan')->getData();
+            
+            $newFilename = 'scan-'.bin2hex(openssl_random_pseudo_bytes(11)).'.'.$scanFile->guessExtension();
+
+            // Move the file to the directory where brochures are stored
+            try {
+                $scanFile->move(
+                    $this->getParameter('upload_dir_transfers'),
+                    $newFilename
+                );
+            } catch (FileException $e) {
+                // ... handle exception if something happens during file upload
+            }
+
+            $repo->find($id)->setStatus(True);
+            $repo->find($id)->setMethod('transfer');
+
+            foreach ($items as $key => $value) {
+                $item = $itemRepo->find($value['itemId']);
+                $item->setItemStock($item->getItemStock() - $orderQty[$value['itemId']]);
+            }
+            
+            $cartItems = [];
+
+            foreach ($items as $key => $value) {
+                $cartItems[$key]['id'] = $itemRepo->find($value['itemId'])->getItemName();
+                $cartItems[$key]['qty'] = $orderQty[$value['itemId']];
+            }
+
+            $receiptFileName = $this->generateReceipt($repo->find($id), 'transfer', $userRepo, $cartItems, $total);
+            $repo->find($id)->setReceipt($receiptFileName);
+
+            $em->flush();
+
+            return $this->redirectToRoute('app_cart_success', ['id' => $id]);
+        }
+
         return $this->render('item/payment.html.twig', [
             'cashForm' => $cashForm->createView(),
+            'chequeForm' => $chequeForm->createView(),
+            'transferForm' => $transferForm->createView(),
             'total' => $total
         ]);
     }

@@ -9,6 +9,7 @@ use App\Repository\ItemRepository;
 use App\Repository\UserRepository;
 use App\Repository\ChequeRepository;
 use App\Repository\ExpensesRepository;
+use App\Repository\OrderRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
@@ -30,7 +31,8 @@ class AdminController extends AbstractController
         ExpensesRepository $repo, 
         UserRepository $userRepo,
         ChequeRepository $chequeRepo,
-        ItemRepository $itemRepo)
+        ItemRepository $itemRepo,
+        OrderRepository $orderRepo)
     {
         $itemsInStock = $itemRepo->findSumStock()[0][1];
 
@@ -91,6 +93,7 @@ class AdminController extends AbstractController
             + $salaryAmount
             + $cnssAmount : 1; 
         ;
+        $totalEarnings = $orderRepo->findSumEarnings()[0][1] == !null ? floatval($orderRepo->findSumEarnings()[0][1]) : 0;
         
         $chequesList = $chequeRepo->findAll();
         $employeesList = $userRepo->findByRole('ROLE_USER_EMPLOYEE');
@@ -105,7 +108,8 @@ class AdminController extends AbstractController
             'cnssAmount' => $cnssAmount,
             'totalAmount' => $totalAmount,
             'chequesList' => $chequesList,
-            'employeesList' => $employeesList
+            'employeesList' => $employeesList,
+            'totalEarnings' => $totalEarnings
         ]);
     }
 

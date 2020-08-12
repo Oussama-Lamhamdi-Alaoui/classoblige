@@ -19,6 +19,18 @@ class OrderRepository extends ServiceEntityRepository
         parent::__construct($registry, Order::class);
     }
 
+    // Custom Function
+    public function findSumEarnings()
+    {
+        return $this->createQueryBuilder('qb')
+            ->select('SUM(qb.total)')
+            ->andWhere('qb.status = :val')
+            ->setParameter('val', 1)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
     // /**
     //  * @return Order[] Returns an array of Order objects
     //  */

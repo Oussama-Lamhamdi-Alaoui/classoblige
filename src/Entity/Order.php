@@ -61,6 +61,11 @@ class Order
      */
     private $receipt;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $cheque;
+
     public function __construct()
     {
         $this->items = new ArrayCollection();
@@ -177,6 +182,18 @@ class Order
     public function setReceipt(?string $receipt): self
     {
         $this->receipt = $receipt;
+
+        return $this;
+    }
+
+    public function getCheque(): ?string
+    {
+        return $this->cheque;
+    }
+
+    public function setCheque(?string $cheque): self
+    {
+        $this->cheque = $cheque;
 
         return $this;
     }
